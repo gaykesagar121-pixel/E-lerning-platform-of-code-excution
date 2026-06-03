@@ -1,0 +1,29 @@
+const fs = require("fs");
+const { exec } = require("child_process");
+const path = require("path");
+
+function executeCode(code) {
+  return new Promise((resolve, reject) => {
+
+    const filePath = path.join(__dirname, "../temp/script.py");
+
+    fs.writeFileSync(filePath, code);
+
+    exec(
+      `docker run --rm -v ${path.join(
+        __dirname,
+        "../temp"
+      )}:/app python:3.11 python /app/script.py`,
+      (error, stdout, stderr) => {
+
+        if (error) {
+          return reject(stderr);
+        }
+
+        resolve(stdout);
+      }
+    );
+  });
+}
+
+module.exports = { executeCode };

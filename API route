@@ -1,0 +1,24 @@
+const express = require("express");
+const router = express.Router();
+
+const { executeCode } = require("../services/executor");
+
+router.post("/execute", async (req, res) => {
+  try {
+    const { code } = req.body;
+
+    const output = await executeCode(code);
+
+    res.json({
+      success: true,
+      output,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
+});
+
+module.exports = router;
