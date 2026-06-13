@@ -1,0 +1,14 @@
+const { exec } = require("child_process");
+
+exec(
+`node -e "${code}"`,
+(error, stdout, stderr) => {
+
+if(error){
+socket.emit("executionResult", stderr);
+return;
+}
+
+socket.emit("executionResult", stdout);
+
+});
